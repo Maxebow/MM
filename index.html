@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X Campaign Manager</title>
+<style>
+  :root{
+    --bg:#f5f7fa;--card:#fff;--text:#111827;--muted:#6b7280;
+    --border:#e5e7eb;--accent:#111827;--accent2:#2563eb;
+    --success:#15803d;--warning:#b45309;--danger:#dc2626;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+  .wrap{max-width:1180px;margin:auto;padding:28px 18px 50px}
+  header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}
+  h1{font-size:27px;margin:0 0 5px}.sub{color:var(--muted);font-size:14px}
+  .badge{background:#111;color:#fff;padding:7px 11px;border-radius:999px;font-size:12px}
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,.04)}
+  .card h2{font-size:17px;margin:0 0 15px}
+  label{display:block;font-size:13px;font-weight:700;margin:13px 0 7px}
+  input,textarea,button,select{font:inherit}
+  input,textarea,select{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:11px 12px;background:#fff;color:var(--text)}
+  textarea{min-height:145px;resize:vertical;line-height:1.5}
+  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  button{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}
+  .primary{background:#111;color:#fff}.blue{background:var(--accent2);color:#fff}
+  .light{background:#f3f4f6;color:#111827}.danger{background:#fee2e2;color:#991b1b}
+  button:disabled{opacity:.45;cursor:not-allowed}
+  .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
+  .preview{border:1px solid var(--border);border-radius:12px;padding:15px;white-space:pre-wrap;min-height:120px;background:#fafafa}
+  .counter{text-align:right;color:var(--muted);font-size:12px;margin-top:5px}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}
+  .stat{padding:14px;border:1px solid var(--border);border-radius:12px;background:#fafafa}
+  .stat strong{display:block;font-size:22px}.stat span{font-size:12px;color:var(--muted)}
+  .table-wrap{overflow:auto;max-height:450px;border:1px solid var(--border);border-radius:12px}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{text-align:left;padding:11px;border-bottom:1px solid var(--border);white-space:nowrap}
+  th{background:#f9fafb;position:sticky;top:0}
+  .pill{padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700}
+  .pending{background:#fef3c7;color:#92400e}.posted{background:#dcfce7;color:#166534}
+  .skipped{background:#f3f4f6;color:#4b5563}
+  .notice{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;padding:12px;border-radius:10px;font-size:13px;line-height:1.5;margin-bottom:15px}
+  .empty{text-align:center;color:var(--muted);padding:35px 15px}
+  .small{font-size:12px;color:var(--muted);line-height:1.45}
+  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:25px}
+  @media(max-width:850px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>𝕏 Campaign Manager</h1>
+      <div class="sub">Advertising workflow for accounts you own or are authorized to manage</div>
+    </div>
+    <div class="badge">GitHub Pages • Single File</div>
+  </header>
+
+  <div class="notice">
+    <b>How this works:</b> this browser-only tool prepares posts and opens X's official compose page.
+    It does <b>not</b> automatically mass-post to accounts or bypass X limits. Use it only with accounts you control or have permission to manage.
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <h2>1. Create Campaign</h2>
+
+      <label for="campaign">Campaign name</label>
+      <input id="campaign" placeholder="e.g. Kaviya Food – September Promotion">
+
+      <label for="message">Advertisement message</label>
+      <textarea id="message" maxlength="280" placeholder="Write your advertisement here..."></textarea>
+      <div class="counter"><span id="chars">0</span>/280</div>
+
+      <label for="hashtags">Hashtags</label>
+      <input id="hashtags" placeholder="#KaviyaFood #Pickle #FoodBusiness">
+
+      <div class="row">
+        <div>
+          <label for="source">Account list</label>
+          <select id="source">
+            <option value="manual">Enter handles manually</option>
+            <option value="csv">Import CSV</option>
+          </select>
+        </div>
+        <div>
+          <label for="handle">Single handle</label>
+          <input id="handle" placeholder="@youraccount">
+        </div>
+      </div>
+
+      <label for="bulk">Multiple handles <span class="small">(one per line; authorized accounts only)</span></label>
+      <textarea id="bulk" style="min-height:90px" placeholder="@account1&#10;@account2&#10;@account3"></textarea>
+
+      <label for="csvFile">CSV file</label>
+      <input id="csvFile" type="file" accept=".csv,text/csv">
+
+      <div class="actions">
+        <button class="primary" id="addBtn">Add Accounts</button>
+        <button class="light" id="clearBtn">Clear Accounts</button>
+        <button class="blue" id="previewBtn">Update Preview</button>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>2. Post Preview</h2>
+      <div id="preview" class="preview">Your post preview will appear here.</div>
+      <div class="actions">
+        <button class="blue" id="openComposer" disabled>Open X Composer</button>
+        <button class="light" id="copyBtn">Copy Text</button>
+      </div>
+      <p class="small">
+        Opening the composer does not publish automatically. Review the post in X and publish it yourself.
+        The final character limit is checked by X.
+      </p>
+
+      <h2 style="margin-top:24px">3. Campaign Statistics</h2>
+      <div class="stats">
+        <div class="stat"><strong id="total">0</strong><span>Total</span></div>
+        <div class="stat"><strong id="posted">0</strong><span>Marked posted</span></div>
+        <div class="stat"><strong id="pending">0</strong><span>Pending</span></div>
+      </div>
+
+      <div class="actions">
+        <button class="light" id="exportBtn">Export Log CSV</button>
+        <button class="danger" id="resetBtn">Reset Campaign</button>
+      </div>
+    </section>
+  </div>
+
+  <section class="card" style="margin-top:18px">
+    <h2>Authorized Account Queue</h2>
+    <div id="tableBox">
+      <div class="empty">No accounts added yet.</div>
+    </div>
+  </section>
+
+  <footer>
+    This page stores campaign data only in your browser's local storage. No X password or API secret is requested.
+  </footer>
+</div>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  let accounts = JSON.parse(localStorage.getItem("x_campaign_accounts") || "[]");
+
+  function save(){ localStorage.setItem("x_campaign_accounts", JSON.stringify(accounts)); }
+  function cleanHandle(v){
+    return v.trim().replace(/^https?:\/\/(www\.)?x\.com\//i,"").replace(/^@/,"").split(/[?#/]/)[0].trim();
+  }
+  function getPostText(){
+    const msg = $("message").value.trim();
+    const tags = $("hashtags").value.trim();
+    return [msg,tags].filter(Boolean).join(" ").trim();
+  }
+  function updatePreview(){
+    const text = getPostText();
+    $("preview").textContent = text || "Your post preview will appear here.";
+    $("chars").textContent = text.length;
+    $("openComposer").disabled = !text;
+  }
+  function addHandles(raw){
+    const list = raw.split(/[\n,\s]+/).map(cleanHandle).filter(Boolean);
+    const existing = new Set(accounts.map(a => a.handle.toLowerCase()));
+    list.forEach(handle => {
+      if(!existing.has(handle.toLowerCase())){
+        accounts.push({handle, status:"Pending", openedAt:"", postedAt:""});
+        existing.add(handle.toLowerCase());
+      }
+    });
+    save(); render();
+  }
+  function render(){
+    $("total").textContent = accounts.length;
+    $("posted").textContent = accounts.filter(a => a.status === "Posted").length;
+    $("pending").textContent = accounts.filter(a => a.status === "Pending").length;
+    if(!accounts.length){
+      $("tableBox").innerHTML = '<div class="empty">No accounts added yet.</div>';
+      return;
+    }
+    let html = `<div class="table-wrap"><table><thead><tr>
+      <th>#</th><th>Account</th><th>Status</th><th>Opened</th><th>Action</th>
+    </tr></thead><tbody>`;
+    accounts.forEach((a,i) => {
+      const cls = a.status.toLowerCase();
+      html += `<tr>
+        <td>${i+1}</td>
+        <td>@${escapeHtml(a.handle)}</td>
+        <td><span class="pill ${cls}">${a.status}</span></td>
+        <td>${a.openedAt ? new Date(a.openedAt).toLocaleString() : "—"}</td>
+        <td>
+          <button class="blue" onclick="openAccount(${i})">Open X</button>
+          <button class="light" onclick="markPosted(${i})">Mark Posted</button>
+          <button class="light" onclick="removeAccount(${i})">Remove</button>
+        </td>
+      </tr>`;
+    });
+    html += "</tbody></table></div>";
+    $("tableBox").innerHTML = html;
+  }
+  function escapeHtml(s){
+    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  window.openAccount = function(i){
+    const text = getPostText();
+    if(!text){ alert("Enter your advertisement message first."); return; }
+    const url = "https://x.com/intent/post?text=" + encodeURIComponent(text);
+    accounts[i].openedAt = new Date().toISOString();
+    save(); render();
+    window.open(url, "_blank", "noopener,noreferrer");
+  };
+  window.markPosted = function(i){
+    accounts[i].status = "Posted";
+    accounts[i].postedAt = new Date().toISOString();
+    save(); render();
+  };
+  window.removeAccount = function(i){
+    accounts.splice(i,1); save(); render();
+  };
+
+  $("message").addEventListener("input", updatePreview);
+  $("hashtags").addEventListener("input", updatePreview);
+  $("previewBtn").addEventListener("click", updatePreview);
+
+  $("addBtn").addEventListener("click", () => {
+    let raw = "";
+    if($("source").value === "manual"){
+      raw = [$("handle").value, $("bulk").value].filter(Boolean).join("\n");
+    } else {
+      alert("Choose your CSV file. The CSV is imported automatically when selected.");
+      return;
+    }
+    if(!raw.trim()){ alert("Enter at least one authorized account handle."); return; }
+    addHandles(raw);
+    $("handle").value = "";
+    $("bulk").value = "";
+  });
+
+  $("csvFile").addEventListener("change", e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    const reader = new FileReader();
+    reader.onload = () => {
+      const lines = String(reader.result).split(/\r?\n/);
+      const handles = [];
+      lines.forEach((line, idx) => {
+        const cells = line.split(",");
+        const value = (idx === 0 && /handle|username|account/i.test(line)) ? "" : cells[0];
+        if(value) handles.push(value);
+      });
+      addHandles(handles.join("\n"));
+      e.target.value = "";
+    };
+    reader.readAsText(file);
+  });
+
+  $("clearBtn").addEventListener("click", () => {
+    if(confirm("Remove all accounts from this browser?")){ accounts=[]; save(); render(); }
+  });
+
+  $("resetBtn").addEventListener("click", () => {
+    if(confirm("Reset the campaign, including all account statuses?")){
+      accounts = accounts.map(a => ({...a,status:"Pending",openedAt:"",postedAt:""}));
+      save(); render();
+    }
+  });
+
+  $("openComposer").addEventListener("click", () => {
+    const text = getPostText();
+    if(text) window.open("https://x.com/intent/post?text="+encodeURIComponent(text), "_blank", "noopener,noreferrer");
+  });
+
+  $("copyBtn").addEventListener("click", async () => {
+    const text = getPostText();
+    if(!text){ alert("Nothing to copy."); return; }
+    try{ await navigator.clipboard.writeText(text); alert("Post text copied."); }
+    catch(e){ alert("Copy failed. Please select and copy the preview manually."); }
+  });
+
+  $("exportBtn").addEventListener("click", () => {
+    const rows = [["Account","Status","Opened At","Posted At"]];
+    accounts.forEach(a => rows.push([a.handle,a.status,a.openedAt,a.postedAt]));
+    const csv = rows.map(r => r.map(v => `"${String(v||"").replace(/"/g,'""')}"`).join(",")).join("\n");
+    const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href=url; a.download="x-campaign-log.csv"; a.click();
+    URL.revokeObjectURL(url);
+  });
+
+  updatePreview();
+  render();
+})();
+</script>
+</body>
+</html>
