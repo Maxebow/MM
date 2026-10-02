@@ -1,299 +1,1520 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>X Campaign Manager</title>
-<style>
-  :root{
-    --bg:#f5f7fa;--card:#fff;--text:#111827;--muted:#6b7280;
-    --border:#e5e7eb;--accent:#111827;--accent2:#2563eb;
-    --success:#15803d;--warning:#b45309;--danger:#dc2626;
-  }
-  *{box-sizing:border-box}
-  body{margin:0;font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
-  .wrap{max-width:1180px;margin:auto;padding:28px 18px 50px}
-  header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:22px}
-  h1{font-size:27px;margin:0 0 5px}.sub{color:var(--muted);font-size:14px}
-  .badge{background:#111;color:#fff;padding:7px 11px;border-radius:999px;font-size:12px}
-  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px}
-  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 5px 20px rgba(0,0,0,.04)}
-  .card h2{font-size:17px;margin:0 0 15px}
-  label{display:block;font-size:13px;font-weight:700;margin:13px 0 7px}
-  input,textarea,button,select{font:inherit}
-  input,textarea,select{width:100%;border:1px solid #d1d5db;border-radius:10px;padding:11px 12px;background:#fff;color:var(--text)}
-  textarea{min-height:145px;resize:vertical;line-height:1.5}
-  .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  button{border:0;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}
-  .primary{background:#111;color:#fff}.blue{background:var(--accent2);color:#fff}
-  .light{background:#f3f4f6;color:#111827}.danger{background:#fee2e2;color:#991b1b}
-  button:disabled{opacity:.45;cursor:not-allowed}
-  .actions{display:flex;flex-wrap:wrap;gap:9px;margin-top:15px}
-  .preview{border:1px solid var(--border);border-radius:12px;padding:15px;white-space:pre-wrap;min-height:120px;background:#fafafa}
-  .counter{text-align:right;color:var(--muted);font-size:12px;margin-top:5px}
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:15px}
-  .stat{padding:14px;border:1px solid var(--border);border-radius:12px;background:#fafafa}
-  .stat strong{display:block;font-size:22px}.stat span{font-size:12px;color:var(--muted)}
-  .table-wrap{overflow:auto;max-height:450px;border:1px solid var(--border);border-radius:12px}
-  table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{text-align:left;padding:11px;border-bottom:1px solid var(--border);white-space:nowrap}
-  th{background:#f9fafb;position:sticky;top:0}
-  .pill{padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700}
-  .pending{background:#fef3c7;color:#92400e}.posted{background:#dcfce7;color:#166534}
-  .skipped{background:#f3f4f6;color:#4b5563}
-  .notice{background:#eff6ff;border:1px solid #bfdbfe;color:#1e40af;padding:12px;border-radius:10px;font-size:13px;line-height:1.5;margin-bottom:15px}
-  .empty{text-align:center;color:var(--muted);padding:35px 15px}
-  .small{font-size:12px;color:var(--muted);line-height:1.45}
-  footer{text-align:center;color:var(--muted);font-size:12px;margin-top:25px}
-  @media(max-width:850px){.grid{grid-template-columns:1fr}.row{grid-template-columns:1fr}header{align-items:flex-start;flex-direction:column}}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEET Mission MBBS - Aspirant Hub & Study Planner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          colors: {
+            doctor: {
+              50: '#ecfdf5',
+              100: '#d1fae5',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857',
+              800: '#065f46',
+              900: '#064e3b',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.05);
+    }
+    .dark ::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.4);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #10b981;
+      border-radius: 9999px;
+    }
+    .glow-effect {
+      box-shadow: 0 0 25px -5px rgba(16, 185, 129, 0.3);
+    }
+    .badge-physics { background-color: #3b82f6; color: #ffffff; }
+    .badge-chemistry { background-color: #f59e0b; color: #ffffff; }
+    .badge-botany { background-color: #10b981; color: #ffffff; }
+    .badge-zoology { background-color: #8b5cf6; color: #ffffff; }
+    .badge-fullmock { background-color: #ec4899; color: #ffffff; }
+  </style>
 </head>
-<body>
-<div class="wrap">
-  <header>
-    <div>
-      <h1>𝕏 Campaign Manager</h1>
-      <div class="sub">Advertising workflow for accounts you own or are authorized to manage</div>
-    </div>
-    <div class="badge">GitHub Pages • Single File</div>
-  </header>
+<body class="bg-slate-900 text-slate-100 font-sans min-h-screen antialiased selection:bg-emerald-500 selection:text-white">
 
-  <div class="notice">
-    <b>How this works:</b> this browser-only tool prepares posts and opens X's official compose page.
-    It does <b>not</b> automatically mass-post to accounts or bypass X limits. Use it only with accounts you control or have permission to manage.
+  <nav class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-400 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+          <i class="fa-solid fa-stethoscope text-white text-lg"></i>
+        </div>
+        <div>
+          <span class="font-bold text-lg tracking-tight bg-gradient-to-r from-emerald-400 to-teal-200 bg-clip-text text-transparent">NEET Mission MBBS</span>
+          <span class="hidden sm:inline-block ml-2 text-xs px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-medium">AIR 1 Mindset</span>
+        </div>
+      </div>
+
+      <div class="flex items-center space-x-2 sm:space-x-4">
+        <!-- Quick Tab Buttons -->
+        <div class="flex items-center space-x-1 bg-slate-800/80 p-1 rounded-xl border border-slate-700/60 text-xs sm:text-sm font-medium">
+          <button onclick="switchTab('dashboard')" id="nav-dashboard" class="tab-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-white font-semibold shadow">Dashboard</button>
+          <button onclick="switchTab('tracker')" id="nav-tracker" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition">Syllabus</button>
+          <button onclick="switchTab('routine')" id="nav-routine" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition">Timetable</button>
+          <button onclick="switchTab('mocks')" id="nav-mocks" class="tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition">Mocks (720)</button>
+        </div>
+
+        <!-- Settings / Info dropdown button -->
+        <button onclick="toggleModal('githubModal')" title="How to host on GitHub Pages" class="p-2 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-emerald-400 transition text-sm flex items-center gap-1.5">
+          <i class="fa-brands fa-github text-base"></i>
+          <span class="hidden md:inline text-xs font-semibold">GitHub Pages</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+    
+    <!-- Hero Banner with Target Countdown & Quote -->
+    <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-800/90 via-slate-800/40 to-slate-900 border border-slate-700/60 p-6 md:p-8 shadow-2xl">
+      <div class="absolute -right-20 -top-20 w-72 h-72 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -left-20 -bottom-20 w-72 h-72 bg-teal-500/10 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Quote & Title -->
+        <div class="lg:col-span-6 space-y-3">
+          <div class="flex items-center space-x-2">
+            <span class="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span> Target: AIIMS New Delhi / GMC
+            </span>
+            <button onclick="showDatePickerModal()" class="text-xs text-slate-400 hover:text-emerald-300 underline transition">
+              <i class="fa-regular fa-calendar-days mr-1"></i>Edit Exam Date
+            </button>
+          </div>
+          <h1 class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+            Crack NEET with <span class="bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 bg-clip-text text-transparent">Consistency & Focus</span>
+          </h1>
+          <p id="motivationalQuote" class="text-slate-300 text-sm sm:text-base italic leading-relaxed border-l-2 border-emerald-500 pl-3">
+            "Every NCERT line you master brings you one step closer to the white coat."
+          </p>
+        </div>
+
+        <!-- Target Date Countdown Display -->
+        <div class="lg:col-span-6 bg-slate-900/80 border border-slate-700/80 rounded-2xl p-5 shadow-inner">
+          <div class="flex items-center justify-between mb-3 text-xs text-slate-400 uppercase tracking-widest font-semibold">
+            <span id="targetDateLabel">NEET Target Exam</span>
+            <span class="text-emerald-400 font-bold" id="examDateFormatted">May 2, 2027</span>
+          </div>
+
+          <div class="grid grid-cols-4 gap-2 sm:gap-3 text-center">
+            <div class="bg-slate-800/90 rounded-xl p-2.5 sm:p-3 border border-slate-700/60 shadow-sm">
+              <div id="daysCount" class="text-2xl sm:text-3xl font-extrabold text-emerald-400 font-mono">00</div>
+              <div class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold mt-1">Days</div>
+            </div>
+            <div class="bg-slate-800/90 rounded-xl p-2.5 sm:p-3 border border-slate-700/60 shadow-sm">
+              <div id="hoursCount" class="text-2xl sm:text-3xl font-extrabold text-teal-300 font-mono">00</div>
+              <div class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold mt-1">Hours</div>
+            </div>
+            <div class="bg-slate-800/90 rounded-xl p-2.5 sm:p-3 border border-slate-700/60 shadow-sm">
+              <div id="minutesCount" class="text-2xl sm:text-3xl font-extrabold text-cyan-300 font-mono">00</div>
+              <div class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold mt-1">Mins</div>
+            </div>
+            <div class="bg-slate-800/90 rounded-xl p-2.5 sm:p-3 border border-slate-700/60 shadow-sm">
+              <div id="secondsCount" class="text-2xl sm:text-3xl font-extrabold text-amber-400 font-mono">00</div>
+              <div class="text-[10px] sm:text-xs text-slate-400 uppercase font-semibold mt-1">Secs</div>
+            </div>
+          </div>
+
+          <!-- Quick summary stats under countdown -->
+          <div class="mt-4 pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+            <div>Today's Study: <span id="todayStudyHours" class="text-emerald-400 font-bold">0.0 hrs</span></div>
+            <div>Syllabus Mastered: <span id="syllabusPercentSummary" class="text-teal-400 font-bold">0%</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-dashboard-view" class="space-y-6">
+      
+      <!-- Top Row: Pomodoro Focus Timer & Quick Day Tasks -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Interactive Pomodoro & Study Session Logger -->
+        <div class="lg:col-span-6 bg-slate-800/70 border border-slate-700/70 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-stopwatch text-emerald-400"></i>
+                <h2 class="text-lg font-bold text-white">Focus Study Timer</h2>
+              </div>
+              <span id="timerStatusBadge" class="text-[11px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-slate-700 text-slate-300">Ready</span>
+            </div>
+
+            <!-- Subject selector for this session -->
+            <div class="mb-4">
+              <label class="block text-xs font-semibold text-slate-400 uppercase mb-1.5">Study Focus Subject</label>
+              <div class="grid grid-cols-4 gap-2">
+                <button type="button" onclick="selectTimerSubject('Physics')" class="timer-sub-btn p-2 rounded-xl text-xs font-bold border border-blue-500/40 bg-blue-500/20 text-blue-300 text-center active-sub" data-sub="Physics">Physics</button>
+                <button type="button" onclick="selectTimerSubject('Chemistry')" class="timer-sub-btn p-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 text-center" data-sub="Chemistry">Chemistry</button>
+                <button type="button" onclick="selectTimerSubject('Botany')" class="timer-sub-btn p-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 text-center" data-sub="Botany">Botany</button>
+                <button type="button" onclick="selectTimerSubject('Zoology')" class="timer-sub-btn p-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-300 text-center" data-sub="Zoology">Zoology</button>
+              </div>
+            </div>
+
+            <!-- Preset Modes -->
+            <div class="flex items-center justify-center gap-2 mb-6">
+              <button onclick="setTimerDuration(25, 'Pomodoro (25m)')" class="px-3 py-1 text-xs rounded-lg bg-slate-700/80 hover:bg-slate-700 text-slate-200 font-medium">25m Focus</button>
+              <button onclick="setTimerDuration(50, 'Deep Work (50m)')" class="px-3 py-1 text-xs rounded-lg bg-slate-700/80 hover:bg-slate-700 text-slate-200 font-medium">50m Deep</button>
+              <button onclick="setTimerDuration(5, 'Short Break (5m)')" class="px-3 py-1 text-xs rounded-lg bg-teal-900/40 text-teal-300 border border-teal-500/30 font-medium">5m Break</button>
+              <button onclick="setTimerDuration(15, 'Long Break (15m)')" class="px-3 py-1 text-xs rounded-lg bg-teal-900/40 text-teal-300 border border-teal-500/30 font-medium">15m Break</button>
+            </div>
+
+            <!-- Big Digital Display -->
+            <div class="text-center my-4">
+              <div id="timerDisplay" class="text-6xl sm:text-7xl font-black font-mono tracking-tight text-white drop-shadow-md">
+                25:00
+              </div>
+              <div id="sessionModeLabel" class="text-xs text-slate-400 mt-2 font-medium">NEET Physics Problem Solving</div>
+            </div>
+          </div>
+
+          <!-- Controls -->
+          <div>
+            <div class="flex items-center justify-center gap-3 mt-4">
+              <button id="startTimerBtn" onclick="toggleTimer()" class="flex-1 py-3 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-base shadow-lg shadow-emerald-500/25 transition transform active:scale-95 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-play"></i> <span>Start Session</span>
+              </button>
+              <button onclick="resetTimer()" class="py-3 px-5 rounded-2xl bg-slate-700 hover:bg-slate-600 text-slate-200 font-bold transition flex items-center justify-center" title="Reset">
+                <i class="fa-solid fa-rotate-right"></i>
+              </button>
+            </div>
+            
+            <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs text-slate-400">
+              <span>Today's Sessions: <b id="completedPomodoros" class="text-emerald-400">0 completed</b></span>
+              <span class="flex items-center gap-1.5"><i class="fa-solid fa-volume-high text-emerald-400"></i> Audio Alert enabled</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="lg:col-span-6 bg-slate-800/70 border border-slate-700/70 rounded-3xl p-6 shadow-xl flex flex-col justify-between">
+          <div>
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <i class="fa-solid fa-list-check text-teal-400"></i>
+                <h2 class="text-lg font-bold text-white">Daily Target Tasks</h2>
+              </div>
+              <span id="taskProgressBadge" class="text-xs font-semibold px-2 py-0.5 rounded-full bg-slate-700 text-slate-300">0/0 done</span>
+            </div>
+
+            <!-- Task Input -->
+            <form id="addTaskForm" onsubmit="handleAddTask(event)" class="space-y-2 mb-4">
+              <div class="flex gap-2">
+                <input id="taskInput" type="text" placeholder="e.g. Solve 50 PYQs Rotation + Bio Plant Kingdom" required
+                  class="flex-1 bg-slate-900/90 border border-slate-700 rounded-xl px-3.5 py-2 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+                <button type="submit" class="px-4 py-2 bg-teal-600 hover:bg-teal-500 text-white rounded-xl text-sm font-bold transition">
+                  <i class="fa-solid fa-plus"></i>
+                </button>
+              </div>
+              <div class="flex gap-2 items-center text-xs">
+                <select id="taskSubject" class="bg-slate-900 border border-slate-700 text-slate-300 rounded-lg px-2.5 py-1 text-xs">
+                  <option value="Physics">Physics</option>
+                  <option value="Chemistry">Chemistry</option>
+                  <option value="Botany">Botany</option>
+                  <option value="Zoology">Zoology</option>
+                  <option value="Mock Test">Mock Test</option>
+                </select>
+                <select id="taskPriority" class="bg-slate-900 border border-slate-700 text-slate-300 rounded-lg px-2.5 py-1 text-xs">
+                  <option value="High">High Priority</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
+                </select>
+              </div>
+            </form>
+
+            <!-- Task List container -->
+            <div id="taskList" class="space-y-2 max-h-64 overflow-y-auto pr-1">
+              <!-- Dynamically injected -->
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-slate-700/60 flex items-center justify-between text-xs text-slate-400">
+            <span>Keep daily tasks realistic: 4 to 6 solid goals.</span>
+            <button onclick="clearCompletedTasks()" class="text-rose-400 hover:text-rose-300 transition">Clear Done</button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Syllabus Quick Progress Meters -->
+      <div class="bg-slate-800/70 border border-slate-700/70 rounded-3xl p-6 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
+          <div>
+            <h3 class="text-base font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-chart-pie text-emerald-400"></i>
+              NEET Syllabus Progress by Subject
+            </h3>
+            <p class="text-xs text-slate-400">Calculated from your checked chapters (Theory, NCERT, PYQs, Revisions)</p>
+          </div>
+          <button onclick="switchTab('tracker')" class="text-xs text-emerald-400 font-semibold hover:underline flex items-center gap-1">
+            Open Full Subject Checklist <i class="fa-solid fa-arrow-right"></i>
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <!-- Physics Card -->
+          <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/70">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-xs font-bold text-blue-400 flex items-center gap-1.5"><i class="fa-solid fa-atom"></i> Physics</span>
+              <span id="physicsProgressPercent" class="text-xs font-extrabold text-blue-300">0%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div id="physicsProgressBar" class="bg-blue-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400 mt-2">
+              <span>Target: 160+/180</span>
+              <span id="physicsChapterRatio">0/0 Ch</span>
+            </div>
+          </div>
+
+          <!-- Chemistry Card -->
+          <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/70">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-xs font-bold text-amber-400 flex items-center gap-1.5"><i class="fa-solid fa-flask"></i> Chemistry</span>
+              <span id="chemProgressPercent" class="text-xs font-extrabold text-amber-300">0%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div id="chemProgressBar" class="bg-amber-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400 mt-2">
+              <span>Target: 170+/180</span>
+              <span id="chemChapterRatio">0/0 Ch</span>
+            </div>
+          </div>
+
+          <!-- Botany Card -->
+          <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/70">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5"><i class="fa-solid fa-leaf"></i> Botany</span>
+              <span id="botanyProgressPercent" class="text-xs font-extrabold text-emerald-300">0%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div id="botanyProgressBar" class="bg-emerald-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400 mt-2">
+              <span>Target: 175+/180</span>
+              <span id="botanyChapterRatio">0/0 Ch</span>
+            </div>
+          </div>
+
+          <!-- Zoology Card -->
+          <div class="bg-slate-900/80 p-4 rounded-2xl border border-slate-700/70">
+            <div class="flex justify-between items-center mb-1">
+              <span class="text-xs font-bold text-purple-400 flex items-center gap-1.5"><i class="fa-solid fa-dna"></i> Zoology</span>
+              <span id="zoologyProgressPercent" class="text-xs font-extrabold text-purple-300">0%</span>
+            </div>
+            <div class="w-full bg-slate-800 h-2.5 rounded-full overflow-hidden">
+              <div id="zoologyProgressBar" class="bg-purple-500 h-full rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between text-[11px] text-slate-400 mt-2">
+              <span>Target: 175+/180</span>
+              <span id="zoologyChapterRatio">0/0 Ch</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div id="tab-tracker-view" class="hidden space-y-6">
+      <div class="bg-slate-800/80 border border-slate-700/70 rounded-3xl p-6 shadow-xl">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-700">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-book-medical text-emerald-400"></i> NEET Syllabus & High-Yield Chapter Matrix
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">Mark NCERT reading, Formula/Notes revision, and 10-year PYQ mastery.</p>
+          </div>
+
+          <div class="flex flex-wrap gap-2 items-center">
+            <!-- Filter buttons -->
+            <button onclick="filterTracker('All')" id="trackFilter-All" class="tracker-filter px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-500 text-white">All Subjects</button>
+            <button onclick="filterTracker('Physics')" id="trackFilter-Physics" class="tracker-filter px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-700 text-slate-300 hover:text-white">Physics</button>
+            <button onclick="filterTracker('Chemistry')" id="trackFilter-Chemistry" class="tracker-filter px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-700 text-slate-300 hover:text-white">Chemistry</button>
+            <button onclick="filterTracker('Botany')" id="trackFilter-Botany" class="tracker-filter px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-700 text-slate-300 hover:text-white">Botany</button>
+            <button onclick="filterTracker('Zoology')" id="trackFilter-Zoology" class="tracker-filter px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-700 text-slate-300 hover:text-white">Zoology</button>
+            <button onclick="openAddChapterModal()" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-teal-600 hover:bg-teal-500 text-white ml-auto">
+              <i class="fa-solid fa-plus mr-1"></i> Add Chapter
+            </button>
+          </div>
+        </div>
+
+        <!-- Chapter Items List -->
+        <div class="overflow-x-auto mt-4">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-900/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-700">
+              <tr>
+                <th class="py-3 px-4">Subject</th>
+                <th class="py-3 px-4">Chapter Name</th>
+                <th class="py-3 px-2 text-center" title="NCERT Read Thoroughly">NCERT Read</th>
+                <th class="py-3 px-2 text-center" title="Class Notes / Theory Cleared">Notes/Theory</th>
+                <th class="py-3 px-2 text-center" title="Past 10-15 Years NEET PYQs">PYQs Solved</th>
+                <th class="py-3 px-2 text-center" title="Revision 1 Completed">Rev 1</th>
+                <th class="py-3 px-2 text-center" title="Revision 2 Completed">Rev 2</th>
+                <th class="py-3 px-4 text-center">Status</th>
+                <th class="py-3 px-2 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="chapterTableBody" class="divide-y divide-slate-800 text-slate-300">
+              <!-- Dynamically populated from JS array -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-routine-view" class="hidden space-y-6">
+      <div class="bg-slate-800/80 border border-slate-700/70 rounded-3xl p-6 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-700">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-calendar-day text-emerald-400"></i> NEET Daily Schedule & Routine
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">Ideal 12-hour high-efficiency routine for full-time NEET aspirants. Track your daily completion.</p>
+          </div>
+          <div class="flex gap-2">
+            <button onclick="resetRoutineCheckboxes()" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 text-slate-200 text-xs font-semibold rounded-xl">
+              <i class="fa-solid fa-rotate-left mr-1"></i> Reset Today's Checks
+            </button>
+            <button onclick="openAddSlotModal()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-semibold rounded-xl">
+              <i class="fa-solid fa-plus mr-1"></i> Add Custom Slot
+            </button>
+          </div>
+        </div>
+
+        <!-- Routine Progress Meter -->
+        <div class="mt-4 p-4 bg-slate-900/60 rounded-2xl border border-slate-700/60 flex items-center justify-between">
+          <div class="space-y-1">
+            <span class="text-xs text-slate-400 uppercase font-semibold">Today's Routine Adherence</span>
+            <div id="routineProgressText" class="text-lg font-bold text-emerald-400">0 of 0 slots done (0%)</div>
+          </div>
+          <div class="w-48 bg-slate-800 h-3 rounded-full overflow-hidden">
+            <div id="routineProgressBar" class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Routine Slot Grid -->
+        <div id="routineSlotsContainer" class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+
+    <div id="tab-mocks-view" class="hidden space-y-6">
+      <div class="bg-slate-800/80 border border-slate-700/70 rounded-3xl p-6 shadow-xl">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-6 border-b border-slate-700">
+          <div>
+            <h2 class="text-xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-award text-amber-400"></i> NEET 720 Marks Mock Test Log & Mistake Notebook
+            </h2>
+            <p class="text-xs sm:text-sm text-slate-400">Track full length or part tests to analyze speed, negative marking, and score evolution.</p>
+          </div>
+          <button onclick="openAddMockModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-xs sm:text-sm font-bold rounded-xl shadow-lg shadow-emerald-600/30 transition">
+            <i class="fa-solid fa-plus mr-1.5"></i> Log New Mock Score
+          </button>
+        </div>
+
+        <!-- Mock Stats Summary Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 my-6">
+          <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-700 text-center">
+            <div class="text-xs text-slate-400">Tests Logged</div>
+            <div id="mockTotalCount" class="text-2xl font-black text-white mt-1">0</div>
+          </div>
+          <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-700 text-center">
+            <div class="text-xs text-slate-400">Average Score</div>
+            <div id="mockAvgScore" class="text-2xl font-black text-emerald-400 mt-1">0 / 720</div>
+          </div>
+          <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-700 text-center">
+            <div class="text-xs text-slate-400">Highest Score</div>
+            <div id="mockHighestScore" class="text-2xl font-black text-cyan-400 mt-1">0 / 720</div>
+          </div>
+          <div class="bg-slate-900/80 p-3.5 rounded-2xl border border-slate-700 text-center">
+            <div class="text-xs text-slate-400">Latest Score</div>
+            <div id="mockLatestScore" class="text-2xl font-black text-amber-400 mt-1">N/A</div>
+          </div>
+        </div>
+
+        <!-- Mock Scores Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-900/80 text-slate-400 uppercase text-[11px] font-semibold border-b border-slate-700">
+              <tr>
+                <th class="py-3 px-3">Date</th>
+                <th class="py-3 px-3">Test Series / Name</th>
+                <th class="py-3 px-2 text-center">Physics (/180)</th>
+                <th class="py-3 px-2 text-center">Chemistry (/180)</th>
+                <th class="py-3 px-2 text-center">Biology (/360)</th>
+                <th class="py-3 px-3 text-center">Total (/720)</th>
+                <th class="py-3 px-3">Weak Areas & Mistake Analysis</th>
+                <th class="py-3 px-2 text-center">Action</th>
+              </tr>
+            </thead>
+            <tbody id="mockTableBody" class="divide-y divide-slate-800 text-slate-300">
+              <!-- Dynamically injected -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="p-4 rounded-2xl bg-slate-800/60 border border-slate-700/60 flex flex-wrap items-center justify-between gap-4 text-xs text-slate-400">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-database text-emerald-400"></i>
+        <span>All data is automatically saved locally in your browser (LocalStorage).</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <button onclick="exportUserData()" class="px-2.5 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 transition font-medium">
+          <i class="fa-solid fa-download mr-1"></i> Export Backup (JSON)
+        </button>
+        <label class="px-2.5 py-1.5 rounded-lg bg-slate-700 hover:bg-slate-600 text-slate-200 transition font-medium cursor-pointer">
+          <i class="fa-solid fa-upload mr-1"></i> Import Backup
+          <input type="file" id="importFileInput" accept=".json" class="hidden" onchange="importUserData(event)">
+        </label>
+        <button onclick="confirmResetDefaults()" class="px-2.5 py-1.5 rounded-lg bg-rose-900/40 hover:bg-rose-900/60 text-rose-300 border border-rose-700/50 transition font-medium">
+          <i class="fa-solid fa-trash-can mr-1"></i> Reset
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- 1. GitHub Pages Tutorial Modal -->
+  <div id="githubModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-slate-700 rounded-3xl max-w-lg w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-700">
+        <div class="flex items-center gap-2 text-emerald-400 font-bold text-lg">
+          <i class="fa-brands fa-github text-2xl"></i> Host Free on GitHub Pages
+        </div>
+        <button onclick="toggleModal('githubModal')" class="text-slate-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="text-xs sm:text-sm text-slate-300 space-y-3 leading-relaxed">
+        <p>You can turn this single file into your personal live study website with zero cost:</p>
+        <ol class="list-decimal list-inside space-y-2 text-slate-300">
+          <li>Create a free account on <a href="https://github.com" target="_blank" class="text-emerald-400 underline">GitHub.com</a>.</li>
+          <li>Click <strong class="text-white">New Repository</strong> (name it e.g. <code class="bg-slate-900 px-1 py-0.5 rounded text-emerald-300">neet-planner</code>). Keep it <strong>Public</strong>.</li>
+          <li>Create a new file named <code class="bg-slate-900 px-1 py-0.5 rounded text-emerald-300">index.html</code> and paste this entire code into it.</li>
+          <li>Go to <strong>Settings</strong> &rarr; <strong>Pages</strong> (on left sidebar).</li>
+          <li>Under <em>Branch</em>, select <code class="bg-slate-900 px-1 py-0.5 rounded text-emerald-300">main</code> (or <code class="bg-slate-900 px-1 py-0.5 rounded text-emerald-300">master</code>) and click <strong>Save</strong>.</li>
+          <li>Your website is live in 60 seconds at: <code class="bg-slate-900 px-1.5 py-0.5 rounded text-teal-300">https://yourusername.github.io/neet-planner</code>. Bookmark it on your phone home screen!</li>
+        </ol>
+      </div>
+      <div class="pt-2 text-right">
+        <button onclick="toggleModal('githubModal')" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 font-bold text-white text-xs rounded-xl">Got It!</button>
+      </div>
+    </div>
   </div>
 
-  <div class="grid">
-    <section class="card">
-      <h2>1. Create Campaign</h2>
+  <!-- 2. Exam Date Edit Modal -->
+  <div id="dateModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-slate-700 rounded-3xl max-w-sm w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-700">
+        <h3 class="text-white font-bold text-base"><i class="fa-regular fa-calendar-check text-emerald-400 mr-2"></i>Set Target Exam Date</h3>
+        <button onclick="toggleModal('dateModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div>
+        <label class="block text-xs text-slate-400 mb-1">Target Exam Date & Time</label>
+        <input type="datetime-local" id="customExamDateInput" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="toggleModal('dateModal')" class="px-3 py-1.5 rounded-lg bg-slate-700 text-slate-300 text-xs">Cancel</button>
+        <button onclick="saveCustomExamDate()" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs">Save Date</button>
+      </div>
+    </div>
+  </div>
 
-      <label for="campaign">Campaign name</label>
-      <input id="campaign" placeholder="e.g. Kaviya Food – September Promotion">
-
-      <label for="message">Advertisement message</label>
-      <textarea id="message" maxlength="280" placeholder="Write your advertisement here..."></textarea>
-      <div class="counter"><span id="chars">0</span>/280</div>
-
-      <label for="hashtags">Hashtags</label>
-      <input id="hashtags" placeholder="#KaviyaFood #Pickle #FoodBusiness">
-
-      <div class="row">
+  <!-- 3. Add Custom Routine Slot Modal -->
+  <div id="slotModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-700">
+        <h3 class="text-white font-bold text-base"><i class="fa-solid fa-clock text-emerald-400 mr-2"></i>Add Routine Slot</h3>
+        <button onclick="toggleModal('slotModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3">
         <div>
-          <label for="source">Account list</label>
-          <select id="source">
-            <option value="manual">Enter handles manually</option>
-            <option value="csv">Import CSV</option>
+          <label class="block text-xs text-slate-400 mb-1">Time Slot (e.g. 06:00 AM - 08:30 AM)</label>
+          <input type="text" id="slotTimeInput" placeholder="06:00 AM - 08:00 AM" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Activity Title</label>
+          <input type="text" id="slotTitleInput" placeholder="Physics Mechanics Numerical Practice" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-emerald-500">
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Subject / Category</label>
+          <select id="slotCategoryInput" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Biology">Biology (Botany/Zoology)</option>
+            <option value="Mock Test">Mock / Revision</option>
+            <option value="Break">Health / Break / Routine</option>
+          </select>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="toggleModal('slotModal')" class="px-3 py-1.5 rounded-lg bg-slate-700 text-slate-300 text-xs">Cancel</button>
+        <button onclick="saveNewRoutineSlot()" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs">Add Slot</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. Add Custom Chapter Modal -->
+  <div id="chapterModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-700">
+        <h3 class="text-white font-bold text-base"><i class="fa-solid fa-book text-emerald-400 mr-2"></i>Add Chapter to Matrix</h3>
+        <button onclick="toggleModal('chapterModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3">
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Subject</label>
+          <select id="newChapterSubject" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
+            <option value="Physics">Physics</option>
+            <option value="Chemistry">Chemistry</option>
+            <option value="Botany">Botany</option>
+            <option value="Zoology">Zoology</option>
           </select>
         </div>
         <div>
-          <label for="handle">Single handle</label>
-          <input id="handle" placeholder="@youraccount">
+          <label class="block text-xs text-slate-400 mb-1">Chapter Name</label>
+          <input type="text" id="newChapterName" placeholder="e.g., Ray Optics & Optical Instruments" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-sm text-white">
         </div>
       </div>
-
-      <label for="bulk">Multiple handles <span class="small">(one per line; authorized accounts only)</span></label>
-      <textarea id="bulk" style="min-height:90px" placeholder="@account1&#10;@account2&#10;@account3"></textarea>
-
-      <label for="csvFile">CSV file</label>
-      <input id="csvFile" type="file" accept=".csv,text/csv">
-
-      <div class="actions">
-        <button class="primary" id="addBtn">Add Accounts</button>
-        <button class="light" id="clearBtn">Clear Accounts</button>
-        <button class="blue" id="previewBtn">Update Preview</button>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="toggleModal('chapterModal')" class="px-3 py-1.5 rounded-lg bg-slate-700 text-slate-300 text-xs">Cancel</button>
+        <button onclick="saveNewChapter()" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs">Add Chapter</button>
       </div>
-    </section>
-
-    <section class="card">
-      <h2>2. Post Preview</h2>
-      <div id="preview" class="preview">Your post preview will appear here.</div>
-      <div class="actions">
-        <button class="blue" id="openComposer" disabled>Open X Composer</button>
-        <button class="light" id="copyBtn">Copy Text</button>
-      </div>
-      <p class="small">
-        Opening the composer does not publish automatically. Review the post in X and publish it yourself.
-        The final character limit is checked by X.
-      </p>
-
-      <h2 style="margin-top:24px">3. Campaign Statistics</h2>
-      <div class="stats">
-        <div class="stat"><strong id="total">0</strong><span>Total</span></div>
-        <div class="stat"><strong id="posted">0</strong><span>Marked posted</span></div>
-        <div class="stat"><strong id="pending">0</strong><span>Pending</span></div>
-      </div>
-
-      <div class="actions">
-        <button class="light" id="exportBtn">Export Log CSV</button>
-        <button class="danger" id="resetBtn">Reset Campaign</button>
-      </div>
-    </section>
+    </div>
   </div>
 
-  <section class="card" style="margin-top:18px">
-    <h2>Authorized Account Queue</h2>
-    <div id="tableBox">
-      <div class="empty">No accounts added yet.</div>
+  <!-- 5. Log Mock Test Modal -->
+  <div id="mockModal" class="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm hidden flex items-center justify-center p-4">
+    <div class="bg-slate-800 border border-slate-700 rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-2 border-b border-slate-700">
+        <h3 class="text-white font-bold text-base"><i class="fa-solid fa-pen-fancy text-emerald-400 mr-2"></i>Log Mock Test Score (/720)</h3>
+        <button onclick="toggleModal('mockModal')" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="space-y-3">
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Date</label>
+            <input type="date" id="mockDateInput" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-xs text-slate-400 mb-1">Test Name/Source</label>
+            <input type="text" id="mockNameInput" placeholder="Allen Full Syllabus #3" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white">
+          </div>
+        </div>
+        <div class="grid grid-cols-3 gap-2">
+          <div>
+            <label class="block text-[11px] text-blue-400 font-semibold mb-1">Physics (/180)</label>
+            <input type="number" id="mockPhysicsScore" min="0" max="180" placeholder="150" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] text-amber-400 font-semibold mb-1">Chemistry (/180)</label>
+            <input type="number" id="mockChemScore" min="0" max="180" placeholder="160" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white">
+          </div>
+          <div>
+            <label class="block text-[11px] text-emerald-400 font-semibold mb-1">Biology (/360)</label>
+            <input type="number" id="mockBioScore" min="0" max="360" placeholder="340" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-2.5 py-1.5 text-xs text-white">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs text-slate-400 mb-1">Mistake Notebook Notes (Silies, calculation errors, weak chapters)</label>
+          <textarea id="mockNotesInput" rows="2" placeholder="e.g. Lost 8 marks in optics sign convention, revised NCERT Plant Hormones" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white"></textarea>
+        </div>
+      </div>
+      <div class="flex justify-end gap-2 pt-2">
+        <button onclick="toggleModal('mockModal')" class="px-3 py-1.5 rounded-lg bg-slate-700 text-slate-300 text-xs">Cancel</button>
+        <button onclick="saveMockScore()" class="px-4 py-1.5 rounded-lg bg-emerald-600 text-white font-bold text-xs">Save Mock Score</button>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <footer>
-    This page stores campaign data only in your browser's local storage. No X password or API secret is requested.
-  </footer>
-</div>
+  <!-- Notification Toast -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-24 transition duration-300 bg-emerald-600 text-white px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 text-sm font-semibold pointer-events-none">
+    <i class="fa-solid fa-circle-check text-lg"></i>
+    <span id="toastMsg">Action saved successfully!</span>
+  </div>
 
-<script>
-(() => {
-  const $ = id => document.getElementById(id);
-  let accounts = JSON.parse(localStorage.getItem("x_campaign_accounts") || "[]");
+  <script>
+    // Motivational Quotes for NEET aspirants
+    const QUOTES = [
+      "Every NCERT line you master brings you one step closer to the white coat.",
+      "Physics is just concept + 50 numericals a day. Stay consistent!",
+      "The stethoscope will look great with your name tag: Dr. Aspirant.",
+      "Mistakes in mock tests today will save ranks on NEET exam day.",
+      "Discipline is doing what needs to be done, even when you feel tired.",
+      "Revise Organic chemistry reactions before sleeping. Muscle memory wins NEET."
+    ];
 
-  function save(){ localStorage.setItem("x_campaign_accounts", JSON.stringify(accounts)); }
-  function cleanHandle(v){
-    return v.trim().replace(/^https?:\/\/(www\.)?x\.com\//i,"").replace(/^@/,"").split(/[?#/]/)[0].trim();
-  }
-  function getPostText(){
-    const msg = $("message").value.trim();
-    const tags = $("hashtags").value.trim();
-    return [msg,tags].filter(Boolean).join(" ").trim();
-  }
-  function updatePreview(){
-    const text = getPostText();
-    $("preview").textContent = text || "Your post preview will appear here.";
-    $("chars").textContent = text.length;
-    $("openComposer").disabled = !text;
-  }
-  function addHandles(raw){
-    const list = raw.split(/[\n,\s]+/).map(cleanHandle).filter(Boolean);
-    const existing = new Set(accounts.map(a => a.handle.toLowerCase()));
-    list.forEach(handle => {
-      if(!existing.has(handle.toLowerCase())){
-        accounts.push({handle, status:"Pending", openedAt:"", postedAt:""});
-        existing.add(handle.toLowerCase());
-      }
-    });
-    save(); render();
-  }
-  function render(){
-    $("total").textContent = accounts.length;
-    $("posted").textContent = accounts.filter(a => a.status === "Posted").length;
-    $("pending").textContent = accounts.filter(a => a.status === "Pending").length;
-    if(!accounts.length){
-      $("tableBox").innerHTML = '<div class="empty">No accounts added yet.</div>';
-      return;
-    }
-    let html = `<div class="table-wrap"><table><thead><tr>
-      <th>#</th><th>Account</th><th>Status</th><th>Opened</th><th>Action</th>
-    </tr></thead><tbody>`;
-    accounts.forEach((a,i) => {
-      const cls = a.status.toLowerCase();
-      html += `<tr>
-        <td>${i+1}</td>
-        <td>@${escapeHtml(a.handle)}</td>
-        <td><span class="pill ${cls}">${a.status}</span></td>
-        <td>${a.openedAt ? new Date(a.openedAt).toLocaleString() : "—"}</td>
-        <td>
-          <button class="blue" onclick="openAccount(${i})">Open X</button>
-          <button class="light" onclick="markPosted(${i})">Mark Posted</button>
-          <button class="light" onclick="removeAccount(${i})">Remove</button>
-        </td>
-      </tr>`;
-    });
-    html += "</tbody></table></div>";
-    $("tableBox").innerHTML = html;
-  }
-  function escapeHtml(s){
-    return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-  }
-  window.openAccount = function(i){
-    const text = getPostText();
-    if(!text){ alert("Enter your advertisement message first."); return; }
-    const url = "https://x.com/intent/post?text=" + encodeURIComponent(text);
-    accounts[i].openedAt = new Date().toISOString();
-    save(); render();
-    window.open(url, "_blank", "noopener,noreferrer");
-  };
-  window.markPosted = function(i){
-    accounts[i].status = "Posted";
-    accounts[i].postedAt = new Date().toISOString();
-    save(); render();
-  };
-  window.removeAccount = function(i){
-    accounts.splice(i,1); save(); render();
-  };
+    // Default Pre-populated High Yield NEET Chapters
+    const DEFAULT_CHAPTERS = [
+      // Physics
+      { id: 'p1', subject: 'Physics', name: 'Units, Dimensions & Errors', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'p2', subject: 'Physics', name: 'Kinematics & Laws of Motion', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
+      { id: 'p3', subject: 'Physics', name: 'Work, Energy & Power', ncert: true, notes: true, pyq: true, r1: false, r2: false, status: 'In Progress' },
+      { id: 'p4', subject: 'Physics', name: 'Rotational Motion & Gravitation', ncert: false, notes: true, pyq: false, r1: false, r2: false, status: 'Not Started' },
+      { id: 'p5', subject: 'Physics', name: 'Thermodynamics & Kinetic Theory', ncert: true, notes: true, pyq: true, r1: false, r2: false, status: 'In Progress' },
+      { id: 'p6', subject: 'Physics', name: 'Electrostatics & Current Electricity', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'p7', subject: 'Physics', name: 'Ray & Wave Optics', ncert: false, notes: false, pyq: false, r1: false, r2: false, status: 'Not Started' },
+      { id: 'p8', subject: 'Physics', name: 'Modern Physics & Semiconductors', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
 
-  $("message").addEventListener("input", updatePreview);
-  $("hashtags").addEventListener("input", updatePreview);
-  $("previewBtn").addEventListener("click", updatePreview);
+      // Chemistry
+      { id: 'c1', subject: 'Chemistry', name: 'Some Basic Concepts of Chemistry (Mole)', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
+      { id: 'c2', subject: 'Chemistry', name: 'Atomic Structure & Chemical Bonding', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'c3', subject: 'Chemistry', name: 'Thermodynamics & Chemical Equilibrium', ncert: true, notes: true, pyq: false, r1: false, r2: false, status: 'In Progress' },
+      { id: 'c4', subject: 'Chemistry', name: 'Solutions & Electrochemistry', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'c5', subject: 'Chemistry', name: 'Coordination Compounds & d/f-Block', ncert: true, notes: true, pyq: true, r1: false, r2: false, status: 'In Progress' },
+      { id: 'c6', subject: 'Chemistry', name: 'General Organic Chemistry (GOC) & Hydrocarbons', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
+      { id: 'c7', subject: 'Chemistry', name: 'Aldehydes, Ketones & Carboxylic Acids', ncert: true, notes: true, pyq: false, r1: false, r2: false, status: 'In Progress' },
+      { id: 'c8', subject: 'Chemistry', name: 'Biomolecules', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
 
-  $("addBtn").addEventListener("click", () => {
-    let raw = "";
-    if($("source").value === "manual"){
-      raw = [$("handle").value, $("bulk").value].filter(Boolean).join("\n");
-    } else {
-      alert("Choose your CSV file. The CSV is imported automatically when selected.");
-      return;
-    }
-    if(!raw.trim()){ alert("Enter at least one authorized account handle."); return; }
-    addHandles(raw);
-    $("handle").value = "";
-    $("bulk").value = "";
-  });
+      // Botany
+      { id: 'b1', subject: 'Botany', name: 'Biological Classification', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'b2', subject: 'Botany', name: 'Plant Kingdom', ncert: true, notes: true, pyq: true, r1: false, r2: false, status: 'In Progress' },
+      { id: 'b3', subject: 'Botany', name: 'Cell Cycle & Cell Division', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
+      { id: 'b4', subject: 'Botany', name: 'Photosynthesis & Respiration in Plants', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'b5', subject: 'Botany', name: 'Principles of Inheritance & Variation (Genetics)', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
+      { id: 'b6', subject: 'Botany', name: 'Molecular Basis of Inheritance', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'b7', subject: 'Botany', name: 'Organisms and Populations & Ecosystem', ncert: true, notes: true, pyq: true, r1: false, r2: false, status: 'In Progress' },
 
-  $("csvFile").addEventListener("change", e => {
-    const file = e.target.files[0];
-    if(!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const lines = String(reader.result).split(/\r?\n/);
-      const handles = [];
-      lines.forEach((line, idx) => {
-        const cells = line.split(",");
-        const value = (idx === 0 && /handle|username|account/i.test(line)) ? "" : cells[0];
-        if(value) handles.push(value);
-      });
-      addHandles(handles.join("\n"));
-      e.target.value = "";
+      // Zoology
+      { id: 'z1', subject: 'Zoology', name: 'Animal Kingdom', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'z2', subject: 'Zoology', name: 'Human Reproduction & Reproductive Health', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
+      { id: 'z3', subject: 'Zoology', name: 'Breathing & Body Fluids Circulation', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+      { id: 'z4', subject: 'Zoology', name: 'Excretory Products & Locomotion', ncert: true, notes: true, pyq: true, r1: false, r2: false, status: 'In Progress' },
+      { id: 'z5', subject: 'Zoology', name: 'Neural Control & Chemical Coordination', ncert: true, notes: true, pyq: true, r1: false, r2: false, status: 'In Progress' },
+      { id: 'z6', subject: 'Zoology', name: 'Human Health and Disease', ncert: true, notes: true, pyq: true, r1: true, r2: true, status: 'Mastered' },
+      { id: 'z7', subject: 'Zoology', name: 'Biotechnology: Principles and Applications', ncert: true, notes: true, pyq: true, r1: true, r2: false, status: 'In Progress' },
+    ];
+
+    // Standard 12-Hour Daily Routine for NEET
+    const DEFAULT_ROUTINE = [
+      { id: 's1', time: '05:30 AM - 06:00 AM', title: 'Wake up, hydration, light stretch & Day Planning', category: 'Break', completed: true },
+      { id: 's2', time: '06:00 AM - 08:30 AM', title: 'Biology NCERT Deep Active Recall & Highlighting', category: 'Biology', completed: true },
+      { id: 's3', time: '08:30 AM - 09:30 AM', title: 'Healthy Breakfast & Short Walk / Rest', category: 'Break', completed: false },
+      { id: 's4', time: '09:30 AM - 01:00 PM', title: 'Physics Numericals & Formula Application (50+ Qs)', category: 'Physics', completed: false },
+      { id: 's5', time: '01:00 PM - 02:30 PM', title: 'Nutritious Lunch & Power Nap (Rest is mandatory)', category: 'Break', completed: false },
+      { id: 's6', time: '02:30 PM - 05:30 PM', title: 'NEET Exam Slot: Mock Test / Chemistry Problem Solving', category: 'Chemistry', completed: false },
+      { id: 's7', time: '05:30 PM - 06:15 PM', title: 'Evening Refreshment, Tea & Physical Activity', category: 'Break', completed: false },
+      { id: 's8', time: '06:15 PM - 08:30 PM', title: 'Organic / Inorganic Reactions & Flashcards Revision', category: 'Chemistry', completed: false },
+      { id: 's9', time: '08:30 PM - 09:30 PM', title: 'Dinner & Family Time', category: 'Break', completed: false },
+      { id: 's10', time: '09:30 PM - 11:00 PM', title: 'Daily Mistake Notebook review & Day Wrap-up', category: 'Mock Test', completed: false },
+      { id: 's11', time: '11:00 PM - 05:30 AM', title: 'Sound Sleep (7 hours brain consolidation)', category: 'Break', completed: false },
+    ];
+
+    // Sample Mocks
+    const DEFAULT_MOCKS = [
+      { id: 'm1', date: '2026-09-15', name: 'Major Test 01 - Full 11th', physics: 145, chem: 155, bio: 330, total: 630, notes: 'Calculation errors in mechanics. Need more plant physiology revision.' },
+      { id: 'm2', date: '2026-09-28', name: 'AIIMS Pattern Full Mock 02', physics: 160, chem: 168, bio: 345, total: 673, notes: 'Strong biology score. Optics sign conventions reviewed.' }
+    ];
+
+    // Default Target Date: First Sunday of May 2027
+    const DEFAULT_EXAM_DATE = '2027-05-02T14:00';
+
+    // State Variables
+    let appState = {
+      targetExamDate: DEFAULT_EXAM_DATE,
+      chapters: DEFAULT_CHAPTERS,
+      routine: DEFAULT_ROUTINE,
+      tasks: [
+        { id: 't1', text: 'Solve 45 questions on Rotational Motion', subject: 'Physics', priority: 'High', done: false },
+        { id: 't2', text: 'Read NCERT Genetics 20 pages thoroughly', subject: 'Botany', priority: 'High', done: true },
+        { id: 't3', text: 'Practice Coordination Compounds IUPAC naming', subject: 'Chemistry', priority: 'Medium', done: false }
+      ],
+      mocks: DEFAULT_MOCKS,
+      studySessionsCount: 0,
+      totalStudyMinutes: 0
     };
-    reader.readAsText(file);
-  });
 
-  $("clearBtn").addEventListener("click", () => {
-    if(confirm("Remove all accounts from this browser?")){ accounts=[]; save(); render(); }
-  });
+    let activeTrackerFilter = 'All';
 
-  $("resetBtn").addEventListener("click", () => {
-    if(confirm("Reset the campaign, including all account statuses?")){
-      accounts = accounts.map(a => ({...a,status:"Pending",openedAt:"",postedAt:""}));
-      save(); render();
+    function loadAppState() {
+      try {
+        const stored = localStorage.getItem('neet_planner_v1');
+        if (stored) {
+          appState = { ...appState, ...JSON.parse(stored) };
+        }
+      } catch (err) {
+        console.error('Error loading data:', err);
+      }
     }
-  });
 
-  $("openComposer").addEventListener("click", () => {
-    const text = getPostText();
-    if(text) window.open("https://x.com/intent/post?text="+encodeURIComponent(text), "_blank", "noopener,noreferrer");
-  });
+    function saveAppState() {
+      try {
+        localStorage.setItem('neet_planner_v1', JSON.stringify(appState));
+      } catch (err) {
+        console.error('Error saving data:', err);
+      }
+    }
 
-  $("copyBtn").addEventListener("click", async () => {
-    const text = getPostText();
-    if(!text){ alert("Nothing to copy."); return; }
-    try{ await navigator.clipboard.writeText(text); alert("Post text copied."); }
-    catch(e){ alert("Copy failed. Please select and copy the preview manually."); }
-  });
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.innerText = message;
+      toast.classList.remove('translate-y-24');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24');
+      }, 2500);
+    }
 
-  $("exportBtn").addEventListener("click", () => {
-    const rows = [["Account","Status","Opened At","Posted At"]];
-    accounts.forEach(a => rows.push([a.handle,a.status,a.openedAt,a.postedAt]));
-    const csv = rows.map(r => r.map(v => `"${String(v||"").replace(/"/g,'""')}"`).join(",")).join("\n");
-    const blob = new Blob([csv], {type:"text/csv;charset=utf-8"});
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href=url; a.download="x-campaign-log.csv"; a.click();
-    URL.revokeObjectURL(url);
-  });
+    function updateCountdown() {
+      const targetTime = new Date(appState.targetExamDate).getTime();
+      const now = new Date().getTime();
+      const diff = targetTime - now;
 
-  updatePreview();
-  render();
-})();
-</script>
+      const dateObj = new Date(appState.targetExamDate);
+      document.getElementById('examDateFormatted').innerText = dateObj.toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      });
+
+      if (diff <= 0) {
+        document.getElementById('daysCount').innerText = "00";
+        document.getElementById('hoursCount').innerText = "00";
+        document.getElementById('minutesCount').innerText = "00";
+        document.getElementById('secondsCount').innerText = "00";
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('daysCount').innerText = String(days).padStart(2, '0');
+      document.getElementById('hoursCount').innerText = String(hours).padStart(2, '0');
+      document.getElementById('minutesCount').innerText = String(minutes).padStart(2, '0');
+      document.getElementById('secondsCount').innerText = String(seconds).padStart(2, '0');
+    }
+
+    function showDatePickerModal() {
+      document.getElementById('customExamDateInput').value = appState.targetExamDate.slice(0, 16);
+      toggleModal('dateModal');
+    }
+
+    function saveCustomExamDate() {
+      const input = document.getElementById('customExamDateInput').value;
+      if (input) {
+        appState.targetExamDate = input;
+        saveAppState();
+        updateCountdown();
+        toggleModal('dateModal');
+        showToast('NEET Exam Target Date updated!');
+      }
+    }
+
+    let timerInterval = null;
+    let timerRemainingSeconds = 25 * 60;
+    let timerInitialSeconds = 25 * 60;
+    let isTimerRunning = false;
+    let selectedTimerSubject = 'Physics';
+
+    function playBeepSound() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // D5
+        osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.3); // A5
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.5);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.5);
+      } catch (e) {
+        console.log('AudioContext not allowed without interaction');
+      }
+    }
+
+    function updateTimerUI() {
+      const mins = Math.floor(timerRemainingSeconds / 60);
+      const secs = timerRemainingSeconds % 60;
+      document.getElementById('timerDisplay').innerText = 
+        `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function selectTimerSubject(sub) {
+      selectedTimerSubject = sub;
+      document.querySelectorAll('.timer-sub-btn').forEach(btn => {
+        if (btn.dataset.sub === sub) {
+          btn.className = 'timer-sub-btn p-2 rounded-xl text-xs font-bold border border-emerald-500 bg-emerald-500/20 text-emerald-300 text-center';
+        } else {
+          btn.className = 'timer-sub-btn p-2 rounded-xl text-xs font-bold border border-slate-700 bg-slate-800 text-slate-400 text-center';
+        }
+      });
+      document.getElementById('sessionModeLabel').innerText = `NEET ${sub} Intensive Study Session`;
+    }
+
+    function setTimerDuration(minutes, label) {
+      if (isTimerRunning) pauseTimer();
+      timerInitialSeconds = minutes * 60;
+      timerRemainingSeconds = timerInitialSeconds;
+      document.getElementById('sessionModeLabel').innerText = `${label} - ${selectedTimerSubject}`;
+      updateTimerUI();
+    }
+
+    function toggleTimer() {
+      if (isTimerRunning) {
+        pauseTimer();
+      } else {
+        startTimer();
+      }
+    }
+
+    function startTimer() {
+      isTimerRunning = true;
+      const btn = document.getElementById('startTimerBtn');
+      btn.innerHTML = `<i class="fa-solid fa-pause"></i> <span>Pause</span>`;
+      btn.className = 'flex-1 py-3 px-6 rounded-2xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-base shadow-lg transition flex items-center justify-center gap-2';
+      document.getElementById('timerStatusBadge').innerText = 'Focusing...';
+      document.getElementById('timerStatusBadge').className = 'text-[11px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+
+      timerInterval = setInterval(() => {
+        if (timerRemainingSeconds > 0) {
+          timerRemainingSeconds--;
+          updateTimerUI();
+        } else {
+          clearInterval(timerInterval);
+          isTimerRunning = false;
+          playBeepSound();
+          handleTimerCompleted();
+        }
+      }, 1000);
+    }
+
+    function pauseTimer() {
+      clearInterval(timerInterval);
+      isTimerRunning = false;
+      const btn = document.getElementById('startTimerBtn');
+      btn.innerHTML = `<i class="fa-solid fa-play"></i> <span>Resume</span>`;
+      btn.className = 'flex-1 py-3 px-6 rounded-2xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-base shadow-lg shadow-emerald-500/25 transition flex items-center justify-center gap-2';
+      document.getElementById('timerStatusBadge').innerText = 'Paused';
+      document.getElementById('timerStatusBadge').className = 'text-[11px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30';
+    }
+
+    function resetTimer() {
+      if (isTimerRunning) pauseTimer();
+      timerRemainingSeconds = timerInitialSeconds;
+      updateTimerUI();
+      const btn = document.getElementById('startTimerBtn');
+      btn.innerHTML = `<i class="fa-solid fa-play"></i> <span>Start Session</span>`;
+      document.getElementById('timerStatusBadge').innerText = 'Ready';
+      document.getElementById('timerStatusBadge').className = 'text-[11px] font-semibold uppercase px-2.5 py-0.5 rounded-full bg-slate-700 text-slate-300';
+    }
+
+    function handleTimerCompleted() {
+      const minutesSpent = Math.floor(timerInitialSeconds / 60);
+      appState.studySessionsCount = (appState.studySessionsCount || 0) + 1;
+      appState.totalStudyMinutes = (appState.totalStudyMinutes || 0) + minutesSpent;
+      saveAppState();
+      renderStats();
+      showToast(`Bravo! ${minutesSpent}m ${selectedTimerSubject} study session logged!`);
+      resetTimer();
+    }
+
+    function renderTasks() {
+      const container = document.getElementById('taskList');
+      const badge = document.getElementById('taskProgressBadge');
+      container.innerHTML = '';
+
+      if (appState.tasks.length === 0) {
+        container.innerHTML = `<div class="text-center py-6 text-slate-500 text-xs">No tasks added for today. Add one above!</div>`;
+        badge.innerText = '0/0 done';
+        return;
+      }
+
+      const completedCount = appState.tasks.filter(t => t.done).length;
+      badge.innerText = `${completedCount}/${appState.tasks.length} done`;
+
+      appState.tasks.forEach(task => {
+        let badgeColor = 'bg-slate-700 text-slate-300';
+        if (task.subject === 'Physics') badgeColor = 'bg-blue-500/20 text-blue-300 border border-blue-500/30';
+        else if (task.subject === 'Chemistry') badgeColor = 'bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        else if (task.subject === 'Botany') badgeColor = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        else if (task.subject === 'Zoology') badgeColor = 'bg-purple-500/20 text-purple-300 border border-purple-500/30';
+
+        const el = document.createElement('div');
+        el.className = `flex items-center justify-between p-3 rounded-2xl border transition-all ${task.done ? 'bg-slate-900/50 border-slate-800 text-slate-500' : 'bg-slate-900/90 border-slate-700/80 text-white'}`;
+        el.innerHTML = `
+          <div class="flex items-center gap-3 overflow-hidden">
+            <button onclick="toggleTaskDone('${task.id}')" class="w-5 h-5 rounded-lg flex items-center justify-center border ${task.done ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-600 hover:border-emerald-400'}">
+              ${task.done ? '<i class="fa-solid fa-check text-[10px]"></i>' : ''}
+            </button>
+            <div class="truncate">
+              <span class="text-xs sm:text-sm font-medium ${task.done ? 'line-through' : ''}">${task.text}</span>
+              <div class="flex items-center gap-2 mt-0.5">
+                <span class="text-[10px] font-semibold px-2 py-0.2 rounded-full ${badgeColor}">${task.subject}</span>
+                <span class="text-[10px] text-slate-500">${task.priority} Priority</span>
+              </div>
+            </div>
+          </div>
+          <button onclick="deleteTask('${task.id}')" class="text-slate-500 hover:text-rose-400 p-1 text-xs transition">
+            <i class="fa-regular fa-trash-can"></i>
+          </button>
+        `;
+        container.appendChild(el);
+      });
+    }
+
+    function handleAddTask(e) {
+      e.preventDefault();
+      const input = document.getElementById('taskInput');
+      const subject = document.getElementById('taskSubject').value;
+      const priority = document.getElementById('taskPriority').value;
+
+      if (!input.value.trim()) return;
+
+      const newTask = {
+        id: 'task_' + Date.now(),
+        text: input.value.trim(),
+        subject: subject,
+        priority: priority,
+        done: false
+      };
+
+      appState.tasks.unshift(newTask);
+      input.value = '';
+      saveAppState();
+      renderTasks();
+      showToast('Task added to plan!');
+    }
+
+    function toggleTaskDone(id) {
+      const task = appState.tasks.find(t => t.id === id);
+      if (task) {
+        task.done = !task.done;
+        saveAppState();
+        renderTasks();
+      }
+    }
+
+    function deleteTask(id) {
+      appState.tasks = appState.tasks.filter(t => t.id !== id);
+      saveAppState();
+      renderTasks();
+    }
+
+    function clearCompletedTasks() {
+      appState.tasks = appState.tasks.filter(t => !t.done);
+      saveAppState();
+      renderTasks();
+      showToast('Completed tasks cleared');
+    }
+
+    function filterTracker(sub) {
+      activeTrackerFilter = sub;
+      document.querySelectorAll('.tracker-filter').forEach(btn => {
+        btn.className = 'tracker-filter px-3 py-1.5 text-xs font-bold rounded-lg bg-slate-700 text-slate-300 hover:text-white';
+      });
+      const activeBtn = document.getElementById(`trackFilter-${sub}`);
+      if (activeBtn) {
+        activeBtn.className = 'tracker-filter px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-500 text-white';
+      }
+      renderChapterTable();
+    }
+
+    function renderChapterTable() {
+      const tbody = document.getElementById('chapterTableBody');
+      tbody.innerHTML = '';
+
+      const filtered = activeTrackerFilter === 'All' 
+        ? appState.chapters 
+        : appState.chapters.filter(ch => ch.subject === activeTrackerFilter);
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" class="text-center py-6 text-slate-500 text-xs">No chapters found for this filter.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(ch => {
+        let badgeClass = 'badge-physics';
+        if (ch.subject === 'Chemistry') badgeClass = 'badge-chemistry';
+        else if (ch.subject === 'Botany') badgeClass = 'badge-botany';
+        else if (ch.subject === 'Zoology') badgeClass = 'badge-zoology';
+
+        let statusBg = 'bg-slate-700 text-slate-300';
+        if (ch.status === 'Mastered') statusBg = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 font-bold';
+        else if (ch.status === 'In Progress') statusBg = 'bg-amber-500/20 text-amber-300 border border-amber-500/30';
+
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-slate-850/50 transition-colors';
+        row.innerHTML = `
+          <td class="py-3 px-4">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded-full ${badgeClass}">${ch.subject}</span>
+          </td>
+          <td class="py-3 px-4 font-medium text-white">${ch.name}</td>
+          <td class="py-3 px-2 text-center">
+            <input type="checkbox" ${ch.ncert ? 'checked' : ''} onchange="toggleChapterProp('${ch.id}', 'ncert')" class="w-4 h-4 rounded text-emerald-500 focus:ring-0 bg-slate-900 border-slate-700 cursor-pointer">
+          </td>
+          <td class="py-3 px-2 text-center">
+            <input type="checkbox" ${ch.notes ? 'checked' : ''} onchange="toggleChapterProp('${ch.id}', 'notes')" class="w-4 h-4 rounded text-emerald-500 focus:ring-0 bg-slate-900 border-slate-700 cursor-pointer">
+          </td>
+          <td class="py-3 px-2 text-center">
+            <input type="checkbox" ${ch.pyq ? 'checked' : ''} onchange="toggleChapterProp('${ch.id}', 'pyq')" class="w-4 h-4 rounded text-emerald-500 focus:ring-0 bg-slate-900 border-slate-700 cursor-pointer">
+          </td>
+          <td class="py-3 px-2 text-center">
+            <input type="checkbox" ${ch.r1 ? 'checked' : ''} onchange="toggleChapterProp('${ch.id}', 'r1')" class="w-4 h-4 rounded text-emerald-500 focus:ring-0 bg-slate-900 border-slate-700 cursor-pointer">
+          </td>
+          <td class="py-3 px-2 text-center">
+            <input type="checkbox" ${ch.r2 ? 'checked' : ''} onchange="toggleChapterProp('${ch.id}', 'r2')" class="w-4 h-4 rounded text-emerald-500 focus:ring-0 bg-slate-900 border-slate-700 cursor-pointer">
+          </td>
+          <td class="py-3 px-4 text-center">
+            <button onclick="cycleChapterStatus('${ch.id}')" class="text-[11px] px-2.5 py-1 rounded-lg ${statusBg} transition">
+              ${ch.status}
+            </button>
+          </td>
+          <td class="py-3 px-2 text-center">
+            <button onclick="deleteChapter('${ch.id}')" class="text-slate-500 hover:text-rose-400 p-1 text-xs">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      calculateSyllabusStats();
+    }
+
+    function toggleChapterProp(id, prop) {
+      const ch = appState.chapters.find(c => c.id === id);
+      if (ch) {
+        ch[prop] = !ch[prop];
+        // Automatically set status to Mastered if PYQs and Rev1 are done
+        if (ch.ncert && ch.pyq && ch.r1) {
+          ch.status = 'Mastered';
+        } else if (ch.ncert || ch.notes || ch.pyq) {
+          ch.status = 'In Progress';
+        }
+        saveAppState();
+        renderChapterTable();
+      }
+    }
+
+    function cycleChapterStatus(id) {
+      const ch = appState.chapters.find(c => c.id === id);
+      if (ch) {
+        if (ch.status === 'Not Started') ch.status = 'In Progress';
+        else if (ch.status === 'In Progress') ch.status = 'Mastered';
+        else ch.status = 'Not Started';
+
+        saveAppState();
+        renderChapterTable();
+      }
+    }
+
+    function deleteChapter(id) {
+      appState.chapters = appState.chapters.filter(c => c.id !== id);
+      saveAppState();
+      renderChapterTable();
+      showToast('Chapter removed from syllabus');
+    }
+
+    function openAddChapterModal() {
+      document.getElementById('newChapterName').value = '';
+      toggleModal('chapterModal');
+    }
+
+    function saveNewChapter() {
+      const name = document.getElementById('newChapterName').value.trim();
+      const subject = document.getElementById('newChapterSubject').value;
+      if (!name) return;
+
+      const newCh = {
+        id: 'ch_' + Date.now(),
+        subject: subject,
+        name: name,
+        ncert: false,
+        notes: false,
+        pyq: false,
+        r1: false,
+        r2: false,
+        status: 'Not Started'
+      };
+
+      appState.chapters.push(newCh);
+      saveAppState();
+      renderChapterTable();
+      toggleModal('chapterModal');
+      showToast('Chapter added successfully!');
+    }
+
+    function calculateSyllabusStats() {
+      const subjects = ['Physics', 'Chemistry', 'Botany', 'Zoology'];
+      let grandTotalPoints = 0;
+      let grandEarnedPoints = 0;
+
+      subjects.forEach(sub => {
+        const subChapters = appState.chapters.filter(c => c.subject === sub);
+        const total = subChapters.length;
+        if (total === 0) return;
+
+        // Count points: each checkbox = 1 point, Mastered = 2 bonus points
+        let subPoints = 0;
+        let subMax = total * 7; // 5 checkboxes + 2 bonus
+
+        subChapters.forEach(c => {
+          if (c.ncert) subPoints++;
+          if (c.notes) subPoints++;
+          if (c.pyq) subPoints++;
+          if (c.r1) subPoints++;
+          if (c.r2) subPoints++;
+          if (c.status === 'Mastered') subPoints += 2;
+          else if (c.status === 'In Progress') subPoints += 1;
+        });
+
+        const percent = Math.min(100, Math.round((subPoints / subMax) * 100)) || 0;
+        grandTotalPoints += subMax;
+        grandEarnedPoints += subPoints;
+
+        // Update individual card UI
+        const idPrefix = sub === 'Physics' ? 'physics' : sub === 'Chemistry' ? 'chem' : sub.toLowerCase();
+        const percentEl = document.getElementById(`${idPrefix}ProgressPercent`);
+        const barEl = document.getElementById(`${idPrefix}ProgressBar`);
+        const ratioEl = document.getElementById(`${idPrefix}ChapterRatio`);
+
+        if (percentEl) percentEl.innerText = `${percent}%`;
+        if (barEl) barEl.style.width = `${percent}%`;
+        if (ratioEl) ratioEl.innerText = `${subChapters.filter(c => c.status === 'Mastered').length}/${total} Mastered`;
+      });
+
+      const grandPercent = grandTotalPoints > 0 ? Math.round((grandEarnedPoints / grandTotalPoints) * 100) : 0;
+      document.getElementById('syllabusPercentSummary').innerText = `${grandPercent}%`;
+    }
+
+    function renderRoutine() {
+      const container = document.getElementById('routineSlotsContainer');
+      container.innerHTML = '';
+
+      let completedCount = 0;
+
+      appState.routine.forEach(slot => {
+        if (slot.completed) completedCount++;
+
+        let badgeColor = 'bg-slate-700 text-slate-300';
+        if (slot.category === 'Physics') badgeColor = 'bg-blue-500/20 text-blue-300 border border-blue-500/30';
+        else if (slot.category === 'Chemistry') badgeColor = 'bg-amber-500/20 text-amber-300 border border-amber-500/30';
+        else if (slot.category === 'Biology') badgeColor = 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        else if (slot.category === 'Mock Test') badgeColor = 'bg-rose-500/20 text-rose-300 border border-rose-500/30';
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border transition-all flex items-start justify-between gap-3 ${slot.completed ? 'bg-slate-900/40 border-emerald-500/30 opacity-75' : 'bg-slate-900/90 border-slate-700/80 shadow-md'}`;
+        card.innerHTML = `
+          <div class="flex items-start gap-3">
+            <input type="checkbox" ${slot.completed ? 'checked' : ''} onchange="toggleRoutineSlot('${slot.id}')" class="mt-1 w-5 h-5 rounded text-emerald-500 focus:ring-0 bg-slate-900 border-slate-600 cursor-pointer">
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-mono font-bold text-emerald-400">${slot.time}</span>
+                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${badgeColor}">${slot.category}</span>
+              </div>
+              <h4 class="text-sm font-semibold text-white mt-1 ${slot.completed ? 'line-through text-slate-400' : ''}">${slot.title}</h4>
+            </div>
+          </div>
+          <button onclick="deleteRoutineSlot('${slot.id}')" class="text-slate-500 hover:text-rose-400 text-xs p-1">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        `;
+        container.appendChild(card);
+      });
+
+      // Update routine progress bar
+      const total = appState.routine.length;
+      const percent = total > 0 ? Math.round((completedCount / total) * 100) : 0;
+      document.getElementById('routineProgressText').innerText = `${completedCount} of ${total} slots done (${percent}%)`;
+      document.getElementById('routineProgressBar').style.width = `${percent}%`;
+    }
+
+    function toggleRoutineSlot(id) {
+      const slot = appState.routine.find(s => s.id === id);
+      if (slot) {
+        slot.completed = !slot.completed;
+        saveAppState();
+        renderRoutine();
+      }
+    }
+
+    function deleteRoutineSlot(id) {
+      appState.routine = appState.routine.filter(s => s.id !== id);
+      saveAppState();
+      renderRoutine();
+    }
+
+    function resetRoutineCheckboxes() {
+      appState.routine.forEach(s => s.completed = false);
+      saveAppState();
+      renderRoutine();
+      showToast('Routine reset for fresh day!');
+    }
+
+    function openAddSlotModal() {
+      document.getElementById('slotTimeInput').value = '';
+      document.getElementById('slotTitleInput').value = '';
+      toggleModal('slotModal');
+    }
+
+    function saveNewRoutineSlot() {
+      const time = document.getElementById('slotTimeInput').value.trim();
+      const title = document.getElementById('slotTitleInput').value.trim();
+      const cat = document.getElementById('slotCategoryInput').value;
+
+      if (!time || !title) return;
+
+      const newSlot = {
+        id: 'slot_' + Date.now(),
+        time: time,
+        title: title,
+        category: cat,
+        completed: false
+      };
+
+      appState.routine.push(newSlot);
+      saveAppState();
+      renderRoutine();
+      toggleModal('slotModal');
+      showToast('Routine slot added!');
+    }
+
+    function renderMocks() {
+      const tbody = document.getElementById('mockTableBody');
+      tbody.innerHTML = '';
+
+      if (appState.mocks.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" class="text-center py-6 text-slate-500 text-xs">No mock tests recorded yet. Log your first test above!</td></tr>`;
+        document.getElementById('mockTotalCount').innerText = '0';
+        document.getElementById('mockAvgScore').innerText = '0 / 720';
+        document.getElementById('mockHighestScore').innerText = '0 / 720';
+        document.getElementById('mockLatestScore').innerText = 'N/A';
+        return;
+      }
+
+      let sum = 0;
+      let highest = 0;
+
+      appState.mocks.forEach((m, idx) => {
+        sum += m.total;
+        if (m.total > highest) highest = m.total;
+
+        const row = document.createElement('tr');
+        row.className = 'hover:bg-slate-850/50 transition-colors';
+        row.innerHTML = `
+          <td class="py-3 px-3 text-xs text-slate-400 font-mono">${m.date}</td>
+          <td class="py-3 px-3 font-semibold text-white">${m.name}</td>
+          <td class="py-3 px-2 text-center font-mono font-bold text-blue-400">${m.physics}</td>
+          <td class="py-3 px-2 text-center font-mono font-bold text-amber-400">${m.chem}</td>
+          <td class="py-3 px-2 text-center font-mono font-bold text-emerald-400">${m.bio}</td>
+          <td class="py-3 px-3 text-center">
+            <span class="inline-block px-2.5 py-1 rounded-xl text-xs font-black ${m.total >= 650 ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30' : 'bg-slate-700 text-white'}">
+              ${m.total} / 720
+            </span>
+          </td>
+          <td class="py-3 px-3 text-xs text-slate-300 italic max-w-xs truncate" title="${m.notes || 'No notes'}">${m.notes || '-'}</td>
+          <td class="py-3 px-2 text-center">
+            <button onclick="deleteMock('${m.id}')" class="text-slate-500 hover:text-rose-400 p-1 text-xs">
+              <i class="fa-regular fa-trash-can"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+
+      const avg = Math.round(sum / appState.mocks.length);
+      document.getElementById('mockTotalCount').innerText = appState.mocks.length;
+      document.getElementById('mockAvgScore').innerText = `${avg} / 720`;
+      document.getElementById('mockHighestScore').innerText = `${highest} / 720`;
+      document.getElementById('mockLatestScore').innerText = `${appState.mocks[appState.mocks.length - 1].total} / 720`;
+    }
+
+    function openAddMockModal() {
+      document.getElementById('mockDateInput').value = new Date().toISOString().split('T')[0];
+      document.getElementById('mockNameInput').value = '';
+      document.getElementById('mockPhysicsScore').value = '';
+      document.getElementById('mockChemScore').value = '';
+      document.getElementById('mockBioScore').value = '';
+      document.getElementById('mockNotesInput').value = '';
+      toggleModal('mockModal');
+    }
+
+    function saveMockScore() {
+      const date = document.getElementById('mockDateInput').value;
+      const name = document.getElementById('mockNameInput').value.trim();
+      const p = parseInt(document.getElementById('mockPhysicsScore').value) || 0;
+      const c = parseInt(document.getElementById('mockChemScore').value) || 0;
+      const b = parseInt(document.getElementById('mockBioScore').value) || 0;
+      const notes = document.getElementById('mockNotesInput').value.trim();
+
+      if (!name) return;
+
+      const total = p + c + b;
+      const newMock = {
+        id: 'mock_' + Date.now(),
+        date: date || new Date().toISOString().split('T')[0],
+        name: name,
+        physics: p,
+        chem: c,
+        bio: b,
+        total: total,
+        notes: notes
+      };
+
+      appState.mocks.push(newMock);
+      saveAppState();
+      renderMocks();
+      toggleModal('mockModal');
+      showToast(`Mock logged: ${total}/720. Keep pushing!`);
+    }
+
+    function deleteMock(id) {
+      appState.mocks = appState.mocks.filter(m => m.id !== id);
+      saveAppState();
+      renderMocks();
+    }
+
+    function renderStats() {
+      const hours = ((appState.totalStudyMinutes || 0) / 60).toFixed(1);
+      document.getElementById('todayStudyHours').innerText = `${hours} hrs`;
+      document.getElementById('completedPomodoros').innerText = `${appState.studySessionsCount || 0} completed`;
+    }
+
+    function setRandomMotivationalQuote() {
+      const rand = QUOTES[Math.floor(Math.random() * QUOTES.length)];
+      document.getElementById('motivationalQuote').innerText = `"${rand}"`;
+    }
+
+    function switchTab(tabKey) {
+      document.getElementById('tab-dashboard-view').classList.add('hidden');
+      document.getElementById('tab-tracker-view').classList.add('hidden');
+      document.getElementById('tab-routine-view').classList.add('hidden');
+      document.getElementById('tab-mocks-view').classList.add('hidden');
+
+      document.querySelectorAll('.tab-btn').forEach(b => {
+        b.className = 'tab-btn px-3 py-1.5 rounded-lg text-slate-300 hover:text-white transition';
+      });
+
+      if (tabKey === 'dashboard') {
+        document.getElementById('tab-dashboard-view').classList.remove('hidden');
+        document.getElementById('nav-dashboard').className = 'tab-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-white font-semibold shadow';
+      } else if (tabKey === 'tracker') {
+        document.getElementById('tab-tracker-view').classList.remove('hidden');
+        document.getElementById('nav-tracker').className = 'tab-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-white font-semibold shadow';
+        renderChapterTable();
+      } else if (tabKey === 'routine') {
+        document.getElementById('tab-routine-view').classList.remove('hidden');
+        document.getElementById('nav-routine').className = 'tab-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-white font-semibold shadow';
+        renderRoutine();
+      } else if (tabKey === 'mocks') {
+        document.getElementById('tab-mocks-view').classList.remove('hidden');
+        document.getElementById('nav-mocks').className = 'tab-btn px-3 py-1.5 rounded-lg bg-emerald-500 text-white font-semibold shadow';
+        renderMocks();
+      }
+    }
+
+    function toggleModal(modalId) {
+      const modal = document.getElementById(modalId);
+      if (modal.classList.contains('hidden')) {
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    }
+
+    function exportUserData() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(appState, null, 2));
+      const downloadAnchor = document.createElement('a');
+      downloadAnchor.setAttribute("href", dataStr);
+      downloadAnchor.setAttribute("download", `neet_study_planner_backup_${new Date().toISOString().split('T')[0]}.json`);
+      document.body.appendChild(downloadAnchor);
+      downloadAnchor.click();
+      downloadAnchor.remove();
+      showToast('Backup downloaded successfully!');
+    }
+
+    function importUserData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        try {
+          const imported = JSON.parse(e.target.result);
+          if (imported && (imported.chapters || imported.routine)) {
+            appState = imported;
+            saveAppState();
+            initApp();
+            showToast('Backup imported successfully!');
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function confirmResetDefaults() {
+      // Avoid browser window.confirm
+      if (localStorage.getItem('confirm_reset_stage') === '1') {
+        localStorage.removeItem('confirm_reset_stage');
+        localStorage.removeItem('neet_planner_v1');
+        appState = {
+          targetExamDate: DEFAULT_EXAM_DATE,
+          chapters: DEFAULT_CHAPTERS,
+          routine: DEFAULT_ROUTINE,
+          tasks: [],
+          mocks: DEFAULT_MOCKS,
+          studySessionsCount: 0,
+          totalStudyMinutes: 0
+        };
+        saveAppState();
+        initApp();
+        showToast('Reset to default setup!');
+      } else {
+        localStorage.setItem('confirm_reset_stage', '1');
+        showToast('Click Reset again to confirm wipe.');
+        setTimeout(() => localStorage.removeItem('confirm_reset_stage'), 4000);
+      }
+    }
+
+    function initApp() {
+      loadAppState();
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+      setRandomMotivationalQuote();
+      renderTasks();
+      renderRoutine();
+      renderMocks();
+      renderChapterTable();
+      renderStats();
+      selectTimerSubject('Physics');
+      updateTimerUI();
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
 </body>
 </html>
